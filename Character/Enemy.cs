@@ -9,7 +9,7 @@ namespace NeverEndingJob.Character
     public class Enemy : MonoBehaviour
     {
         #region Variables
-        protected MoveBehavior _MoveBehavior;
+        protected MoveAgentBehavior _MoveBehavior;
         protected FollowBehavior _FollowBehavior;
         protected HearBehavior _HearBehavior;
         #endregion
@@ -17,7 +17,7 @@ namespace NeverEndingJob.Character
         #region MonoBehaviour
         void Awake()
         {
-            _MoveBehavior = GetComponent<MoveBehavior>();
+            _MoveBehavior = GetComponent<MoveAgentBehavior>();
             _FollowBehavior = GetComponent<FollowBehavior>();
             _HearBehavior = GetComponent<HearBehavior>();
 

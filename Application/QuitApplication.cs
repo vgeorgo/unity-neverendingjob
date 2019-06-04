@@ -3,15 +3,14 @@ using System.Collections;
 
 namespace NeverEndingJob.Application
 {
-    public class QuitApplication : MonoBehaviour
+    public class QuitApplication
     {
         #region Public
         /// <summary>
         /// Quit the application.
         /// </summary>
-        public void Quit()
+        public static void Quit()
         {
-
             //If we are running in a standalone build of the game
             #if UNITY_STANDALONE
 		    //Quit the application

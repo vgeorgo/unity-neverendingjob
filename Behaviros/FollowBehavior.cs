@@ -10,27 +10,27 @@ namespace NeverEndingJob.Behaviors
     {
         #region Variables
         // Public
-        public Transform Target;
+        public Transform target;
 
         // Protected
-        protected MoveBehavior _MoveBehavior;
-        protected List<Transform> _Targets;
+        protected MoveAgentBehavior _moveBehavior;
+        protected List<Transform> _targets;
         #endregion
 
         #region MonoBehavior
         void Awake()
         {
-            _Targets = new List<Transform>();
+            _targets = new List<Transform>();
 
-            _MoveBehavior = GetComponent<MoveBehavior>();
+            _moveBehavior = GetComponent<MoveAgentBehavior>();
         }
 
         void Update()
         {
-            if (Target == null)
+            if (target == null)
                 return;
 
-            if (_MoveBehavior.HasArrived())
+            if (_moveBehavior.HasArrived())
                 _Next();
         }
         #endregion
@@ -39,11 +39,11 @@ namespace NeverEndingJob.Behaviors
         /// <summary>
         /// Add a new target to follow.
         /// </summary>
-        /// <param name="t">Tranform target</param>
+        /// <param name="t">Transform target</param>
         public void AddTarget(Transform t)
         {
-            _Targets.Add(t);
-            if (Target == null)
+            _targets.Add(t);
+            if (target == null)
                 _Next();
         }
 
@@ -52,28 +52,28 @@ namespace NeverEndingJob.Behaviors
         /// </summary>
         public void Clear()
         {
-            Target = null;
-            _Targets.Clear();
-            _MoveBehavior.Stop();
+            target = null;
+            _targets.Clear();
+            _moveBehavior.Stop();
         }
         #endregion
 
         #region Protected
         protected Transform _ShiftTransform()
         {
-            if (_Targets.Count == 0)
+            if (_targets.Count == 0)
                 return null;
 
-            var target = _Targets[0];
-            _Targets.RemoveAt(0);
+            var target = _targets[0];
+            _targets.RemoveAt(0);
             return target;
         }
 
         protected void _Next()
         {
-            Target = _ShiftTransform();
-            if (Target != null)
-                _MoveBehavior.SetDestination(Target.position);
+            target = _ShiftTransform();
+            if (target != null)
+                _moveBehavior.SetDestination(target.position);
         }
         #endregion
     }

@@ -15,15 +15,15 @@ namespace NeverEndingJob.Behaviors
 
         #region Variables
         // Public
-        public TypeCollider Type = TypeCollider.Sphere;
-        public float Size = 5;
-        public float Delay = 0.5f;
-        public bool UseIntensity = true;
+        public TypeCollider type = TypeCollider.Sphere;
+        public float size = 5;
+        public float delay = 0.5f;
+        public bool useIntensity = true;
 
         // Protected
-        protected Collider _HearingCollider;
-        protected List<Vector3> _HeardLocations;
-        protected bool _IsHearing;
+        protected Collider _hearingCollider;
+        protected List<Vector3> _heardLocations;
+        protected bool _isHearing;
         #endregion
 
         #region Delegates
@@ -64,7 +64,7 @@ namespace NeverEndingJob.Behaviors
         /// <param name="s">New radius value</param>
         public void SetSize(float s)
         {
-            Size = s;
+            size = s;
             _UpdateCollider();
         }
 
@@ -74,7 +74,7 @@ namespace NeverEndingJob.Behaviors
         /// <param name="d">New delay</param>
         public void SetDelay(float d)
         {
-            Delay = d;
+            delay = d;
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace NeverEndingJob.Behaviors
         /// </summary>
         public void Clear()
         {
-            _HeardLocations.Clear();
+            _heardLocations.Clear();
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace NeverEndingJob.Behaviors
         /// </summary>
         public List<Vector3> GetHeardLocations()
         {
-            return _HeardLocations;
+            return _heardLocations;
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace NeverEndingJob.Behaviors
         /// </summary>
         public Vector3? GetLastHeardLocation()
         {
-            if (_HeardLocations.Count > 0)
-                return _HeardLocations[0];
+            if (_heardLocations.Count > 0)
+                return _heardLocations[0];
 
             return null;
         }
@@ -108,44 +108,44 @@ namespace NeverEndingJob.Behaviors
         #region Protected
         protected void _Init()
         {
-            _HeardLocations = new List<Vector3>();
-            _IsHearing = true;
+            _heardLocations = new List<Vector3>();
+            _isHearing = true;
         }
 
         protected void _CreateCollider()
         {
-            if(_HearingCollider != null)
+            if(_hearingCollider != null)
             {
                 Debug.LogWarning("Can not create more than one Hearing collider.");
                 return;
             }
 
-            _HearingCollider = gameObject.AddComponent<SphereCollider>() as SphereCollider;
+            _hearingCollider = gameObject.AddComponent<SphereCollider>() as SphereCollider;
             _UpdateCollider();
         }
 
         protected void _UpdateCollider()
         {
-            if (_HearingCollider == null)
+            if (_hearingCollider == null)
             {
                 Debug.LogWarning("Can not update Null Hearing collider.");
                 return;
             }
 
             // General
-            _HearingCollider.isTrigger = true;
+            _hearingCollider.isTrigger = true;
 
             // Specific
-            var collider = (SphereCollider)_HearingCollider;
-            collider.radius = Size;
+            var collider = (SphereCollider)_hearingCollider;
+            collider.radius = size;
         }
 
         protected void _OnNoise(Transform transform, float intensity, float reachDistance)
         {
-            if (!_IsHearing)
+            if (!_isHearing)
                 return;
 
-            if(UseIntensity)
+            if(useIntensity)
             {
                 var distance = Vector3.Distance(gameObject.transform.position, transform.position);
                 // If the noise reach distance is not enough to reach the hear object, ignore the noise
@@ -153,7 +153,7 @@ namespace NeverEndingJob.Behaviors
                     return;
             }
             
-            _HeardLocations.Insert(0, transform.position);
+            _heardLocations.Insert(0, transform.position);
 
             StartCoroutine(_CoroutineDelay());
 
@@ -164,9 +164,9 @@ namespace NeverEndingJob.Behaviors
 
         protected IEnumerator _CoroutineDelay()
         {
-            _IsHearing = false;
-            yield return new WaitForSeconds(Delay);
-            _IsHearing = true;
+            _isHearing = false;
+            yield return new WaitForSeconds(delay);
+            _isHearing = true;
         }
         #endregion
     }
